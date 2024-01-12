@@ -19,21 +19,33 @@ services:
       - postgres
     restart: always
 
-  api:
-    depends_on:
-      - "db"
-    container_name: shop-server
-    build: .
-    ports:
-      - "8080:8080"
-    networks:
-      - postgres
-    restart: always
+  elastic:
+    container_name: shop-elastic
+    image: elasticsearch:8.11.3
     environment:
-      - SPRING_DATASOURCE_URL=jdbc:postgresql://db:5432/postgres
-      - SPRING_DATASOURCE_USERNAME=postgres
-      - SPRING_DATASOURCE_PASSWORD=1234
-      - SPRING_JPA_HIBERNATE_DDL_AUTO=update
+      discovery.type: single-node
+      xpack.security.enabled: false
+    volumes:
+      - elastic:/usr/share/elasticsearch/data
+    ports:
+      - 9200:9200
+      - 9300:9300
+
+#  api:
+#    depends_on:
+#      - "db"
+#    container_name: shop-server
+#    build: .
+#    ports:
+#      - "8080:8080"
+#    networks:
+#      - postgres
+#    restart: always
+#    environment:
+#      - SPRING_DATASOURCE_URL=jdbc:postgresql://db:5432/postgres
+#      - SPRING_DATASOURCE_USERNAME=postgres
+#      - SPRING_DATASOURCE_PASSWORD=1234
+#      - SPRING_JPA_HIBERNATE_DDL_AUTO=update
 
 networks:
   postgres:
@@ -41,3 +53,4 @@ networks:
 
 volumes:
   postgres:
+  elastic:
