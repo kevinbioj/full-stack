@@ -23,6 +23,7 @@ import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import dayjs, { Dayjs } from 'dayjs';
 import { MinimalShop, ObjectPropertyString } from '../types';
 import { useAppContext, useToastContext } from '../context';
+import { AxiosError } from 'axios';
 
 const schema = (shop: MinimalShop) => ({
     name: shop.name ? '' : 'Ce champ est requis',
@@ -75,8 +76,12 @@ const ShopForm = () => {
                 navigate(`/shop/${id}`);
                 setToast({ severity: 'success', message: 'La boutique a bien été modifiée' });
             })
-            .catch(() => {
-                setToast({ severity: 'error', message: 'Une erreur est survenue lors de la modification' });
+            .catch((e) => {
+                if (e.response.data.message === "Les heures d'ouvertures sont en conflit.") {
+                    setToast({ severity: 'error', message: e.response.data.message });
+                } else {
+                    setToast({ severity: 'error', message: 'Une erreur est survenue lors de la modification' });
+                }
             })
             .finally(() => {
                 setLoading(false);
