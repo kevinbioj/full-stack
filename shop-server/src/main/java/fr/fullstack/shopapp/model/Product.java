@@ -1,21 +1,14 @@
 package fr.fullstack.shopapp.model;
 
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.JoinTable;
-import jakarta.persistence.ManyToMany;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.PositiveOrZero;
 import jakarta.validation.constraints.Size;
+
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -57,8 +50,14 @@ public class Product {
         return localizedProduct;
     }
 
-    public float getPrice() {
-        return price;
+    public float getPriceEUR() {
+        return new BigDecimal(price).setScale(2, RoundingMode.HALF_EVEN)
+                .floatValue();
+    }
+
+    public float getPriceUSD() {
+        return new BigDecimal(price * 1.09).setScale(2, RoundingMode.HALF_EVEN)
+                .floatValue();
     }
 
     public Shop getShop() {
