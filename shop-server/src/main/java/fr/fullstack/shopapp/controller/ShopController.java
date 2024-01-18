@@ -80,11 +80,13 @@ public class ShopController {
       @Parameter(description = "Define that the shops must be created after this date", example = "2022-11-15")
       @RequestParam(required = false) Optional<String> createdAfter,
       @Parameter(description = "Define that the shops must be created before this date", example = "2022-11-15")
-      @RequestParam(required = false) Optional<String> createdBefore
+      @RequestParam(required = false) Optional<String> createdBefore,
+      @Parameter(description = "Termes de recherche", example = "Boutique du Madrillet")
+      @RequestParam(required = false) Optional<String> search
 
   ) {
     return ResponseEntity.ok(
-        service.getShopList(sortBy, inVacations, createdAfter, createdBefore, pageable)
+        service.getShopList(sortBy, inVacations, createdAfter, createdBefore, search, pageable)
     );
   }
 

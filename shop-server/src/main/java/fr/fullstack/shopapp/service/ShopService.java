@@ -70,6 +70,7 @@ public class ShopService {
             Optional<Boolean> inVacations,
             Optional<String> createdBefore,
             Optional<String> createdAfter,
+            Optional<String> search,
             Pageable pageable
     ) {
         // SORT
@@ -82,6 +83,11 @@ public class ShopService {
                 default:
                     return shopRepository.findByOrderByNbProductsAsc(pageable);
             }
+        }
+
+        // NAME
+        if (search.isPresent()) {
+            return shopRepository.findByNameContainingIgnoreCaseOrderByIdAsc(pageable, search.get());
         }
 
         // FILTERS

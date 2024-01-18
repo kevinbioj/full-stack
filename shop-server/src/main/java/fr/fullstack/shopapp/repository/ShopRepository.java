@@ -31,6 +31,8 @@ public interface ShopRepository extends JpaRepository<Shop, Long> {
 
     Page<Shop> findByOrderByIdAsc(Pageable pageable);
 
+    Page<Shop> findByNameContainingIgnoreCaseOrderByIdAsc(Pageable pageable, String name);
+
     // SORT
     Page<Shop> findByOrderByNameAsc(Pageable pageable);
 
