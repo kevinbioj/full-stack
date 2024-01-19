@@ -1,6 +1,6 @@
 import { MinimalLocalizedProduct, MinimalProduct, Product } from '../types/product';
 import { LocalizedProduct } from '../types';
-import Language from '../types/locale';
+import { Locale } from '../types/locale';
 
 /**
  *
@@ -11,7 +11,7 @@ import Language from '../types/locale';
  */
 export const getLocalizedProduct = (
     localizedProducts: LocalizedProduct[] | MinimalLocalizedProduct[],
-    locale: Language,
+    locale: Locale,
 ) => {
     const result = localizedProducts.find((o) => {
         return o.locale === locale;
@@ -26,7 +26,7 @@ export const getLocalizedProduct = (
  * @param locale The current locale of the app
  * @returns The product with the name and the description corresponding to the locale
  */
-export const formatterLocalizedProduct = (product: Product, locale: Language) => {
+export const formatterLocalizedProduct = (product: Product, locale: Locale) => {
     const localizedProduct = getLocalizedProduct(product.localizedProducts, locale);
     return { ...product, name: localizedProduct.name, description: localizedProduct.description };
 };

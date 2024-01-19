@@ -6,13 +6,15 @@ import { useNavigate } from 'react-router-dom';
 import { useAppContext } from '../context';
 import { FormattedProduct, Product } from '../types';
 import { formatterLocalizedProduct, priceFormatter } from '../utils';
+import { Devise } from '../types/locale';
 
 type Props = {
     product: Product;
     displayShop?: boolean;
+    devise: Devise;
 };
 
-const ProductCard = ({ product, displayShop = false }: Props) => {
+const ProductCard = ({ product, devise, displayShop = false }: Props) => {
     const navigate = useNavigate();
     const { locale } = useAppContext();
     const [formattedProduct, setFormattedProduct] = useState<FormattedProduct>(
@@ -30,7 +32,9 @@ const ProductCard = ({ product, displayShop = false }: Props) => {
                 <Typography variant="h4" color="text.primary" gutterBottom>
                     {formattedProduct.name}
                 </Typography>
-                <Typography variant="h6">Prix : {priceFormatter(formattedProduct.price)}</Typography>
+                <Typography variant="h6">
+                    Prix : {priceFormatter(formattedProduct.priceEUR, formattedProduct.priceUSD, devise)}
+                </Typography>
                 {formattedProduct.description && (
                     <Typography sx={{ mt: 1.5, maxHeight: 50, overflow: 'hidden' }} color="text.secondary">
                         {formattedProduct.description}

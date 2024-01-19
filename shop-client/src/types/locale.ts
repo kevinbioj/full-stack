@@ -1,6 +1,9 @@
-enum Locale {
+export enum Locale {
     FR = 'FR',
     EN = 'EN',
 }
 
-export default Locale;
+export enum Devise {
+    EUR = 'EUR',
+    USD = 'USD',
+}

@@ -16,7 +16,8 @@ export type MinimalLocalizedProduct = {
 } & LocalizedProductBase;
 
 type ProductBase = {
-    price: number;
+    priceEUR: number;
+    priceUSD: number;
     shop: Shop | null;
     categories: Category[];
 };

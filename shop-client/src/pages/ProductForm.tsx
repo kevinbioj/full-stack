@@ -6,7 +6,7 @@ import { SelectPaginate } from '../components';
 import { useAppContext, useToastContext } from '../context';
 import { CategoryService, ProductService, ShopService } from '../services';
 import { MinimalProduct } from '../types';
-import Locale from '../types/locale';
+import { Locale } from '../types/locale';
 import { formatterProductForm, getLocalizedProduct } from '../utils';
 
 const schema = (product: MinimalProduct) => ({
@@ -15,7 +15,7 @@ const schema = (product: MinimalProduct) => ({
         !product.localizedProducts[1].name && !!product.localizedProducts[1].description
             ? 'Une description est fournie en anglais donc le nom est requis'
             : '',
-    price: product.price >= 0 ? '' : 'Le prix ne peut pas être un nombre négatif',
+    price: product.priceEUR >= 0 ? '' : 'Le prix ne peut pas être un nombre négatif',
 });
 
 const ProductForm = () => {
@@ -26,7 +26,8 @@ const ProductForm = () => {
     const { setToast } = useToastContext();
     const [errors, setErrors] = useState<any>({});
     const [product, setProduct] = useState<MinimalProduct>({
-        price: 0,
+        priceEUR: 0,
+        priceUSD: 0,
         shop: null,
         categories: [],
         localizedProducts: [
@@ -124,10 +125,10 @@ const ProductForm = () => {
     const setPrice = (price: string) => {
         const convertedPrice = parseFloat(price);
         if (Number.isNaN(convertedPrice)) {
-            setProduct({ ...product, price: 0 });
+            setProduct({ ...product, priceEUR: 0 });
             return;
         }
-        setProduct({ ...product, price: Number(convertedPrice.toFixed(2)) });
+        setProduct({ ...product, priceEUR: Number(convertedPrice.toFixed(2)) });
     };
 
     const setShop = (shop: any) => {
@@ -204,7 +205,7 @@ const ProductForm = () => {
                         required
                         type="number"
                         label="Prix"
-                        value={product.price.toString()}
+                        value={product.priceEUR.toString()}
                         onChange={(e) => setPrice(e.target.value)}
                         fullWidth
                         InputProps={{

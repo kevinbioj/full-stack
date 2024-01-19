@@ -23,7 +23,6 @@ import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import dayjs, { Dayjs } from 'dayjs';
 import { MinimalShop, ObjectPropertyString } from '../types';
 import { useAppContext, useToastContext } from '../context';
-import { AxiosError } from 'axios';
 
 const schema = (shop: MinimalShop) => ({
     name: shop.name ? '' : 'Ce champ est requis',

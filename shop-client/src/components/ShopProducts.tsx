@@ -5,6 +5,8 @@ import { Box, FormControl, Grid, Pagination, Typography } from '@mui/material';
 import ProductCard from './ProductCard';
 import { useAppContext } from '../context';
 import SelectPaginate from './SelectPaginate';
+import TogglePrice from './TogglePrice';
+import { Devise } from '../types/locale';
 
 type Props = {
     shopId: string;
@@ -17,6 +19,7 @@ const ShopProducts = ({ shopId }: Props) => {
     const [page, setPage] = useState<number>(0);
     const [pageSelected, setPageSelected] = useState<number>(0);
     const [filter, setFilter] = useState<Category | null>(null);
+    const [devise, setDevise] = useState<Devise>(Devise.EUR);
 
     const getProducts = () => {
         setLoading(true);
@@ -53,6 +56,7 @@ const ShopProducts = ({ shopId }: Props) => {
                     width: '100%',
                     display: 'flex',
                     flexDirection: 'row',
+                    alignItems: 'center',
                     justifyContent: 'space-between',
                 }}
             >
@@ -65,12 +69,13 @@ const ShopProducts = ({ shopId }: Props) => {
                         defaultLabel="Toutes les catégories"
                     />
                 </FormControl>
+                <TogglePrice value={devise} onChange={(value) => setDevise(value)} />
             </Box>
 
             <Grid container alignItems="center" rowSpacing={3} columnSpacing={3}>
                 {products?.map((product) => (
                     <Grid item key={product.id} xs={4}>
-                        <ProductCard product={product} />
+                        <ProductCard product={product} devise={devise} />
                     </Grid>
                 ))}
             </Grid>

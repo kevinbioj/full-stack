@@ -6,6 +6,8 @@ import { ProductCard } from '../components';
 import { useAppContext } from '../context';
 import { ProductService } from '../services';
 import { Product } from '../types';
+import { Devise } from '../types/locale';
+import TogglePrice from '../components/TogglePrice';
 
 const Products = () => {
     const navigate = useNavigate();
@@ -14,6 +16,7 @@ const Products = () => {
     const [count, setCount] = useState<number>(0);
     const [page, setPage] = useState<number>(0);
     const [pageSelected, setPageSelected] = useState<number>(0);
+    const [devise, setDevise] = useState<Devise>(Devise.EUR);
 
     const getProducts = () => {
         setLoading(true);
@@ -37,15 +40,15 @@ const Products = () => {
     return (
         <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 5 }}>
             <Typography variant="h2">Les produits</Typography>
-
             <Box
                 sx={{
                     width: '100%',
                     display: 'flex',
                     flexDirection: 'row',
-                    justifyContent: 'flex-end',
+                    justifyContent: 'space-between',
                 }}
             >
+                <TogglePrice value={devise} onChange={(value) => setDevise(value)} />
                 <Fab variant="extended" color="primary" aria-label="add" onClick={() => navigate('/product/create')}>
                     <AddIcon sx={{ mr: 1 }} />
                     Ajouter un produit
@@ -56,7 +59,7 @@ const Products = () => {
             <Grid container alignItems="center" rowSpacing={3} columnSpacing={3}>
                 {products?.map((product) => (
                     <Grid item key={product.id} xs={4}>
-                        <ProductCard product={product} displayShop={true} />
+                        <ProductCard product={product} displayShop={true} devise={devise} />
                     </Grid>
                 ))}
             </Grid>
