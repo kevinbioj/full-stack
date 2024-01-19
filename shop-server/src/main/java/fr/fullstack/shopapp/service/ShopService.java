@@ -181,7 +181,14 @@ public class ShopService {
     }
 
     private boolean inInterval(OpeningHoursShop h1, OpeningHoursShop h2) {
+        // on compare la même référence de l'objet
+        if (h1.equals(h2)) {
+            return false;
+        }
         if (h1.getDay() == h2.getDay()) {
+            if (h1.getOpenAt() == h2.getOpenAt() || h1.getCloseAt() == h2.getCloseAt()) {
+                return true;
+            }
             if (h1.getOpenAt().isBefore(h2.getOpenAt()) && h1.getCloseAt().isAfter(h2.getCloseAt())) {
                 return true;
             }
