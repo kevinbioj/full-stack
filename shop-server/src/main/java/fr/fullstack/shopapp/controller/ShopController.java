@@ -6,7 +6,10 @@ import fr.fullstack.shopapp.util.ErrorValidation;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.Parameters;
-import org.hibernate.search.mapper.orm.Search;
+import jakarta.validation.Valid;
+import java.time.LocalDate;
+import java.util.List;
+import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -23,9 +26,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
-
-import jakarta.validation.Valid;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/v1/shops")
@@ -88,6 +88,15 @@ public class ShopController {
     return ResponseEntity.ok(
         service.getShopList(sortBy, inVacations, createdAfter, createdBefore, search, pageable)
     );
+  }
+
+  @GetMapping("/search")
+  @Operation(description = "Search for shops across the application.")
+  public ResponseEntity<List<Shop>> searchShops(@RequestParam String query,
+      @RequestParam(required = false) Boolean inVacations, @RequestParam(required = false)
+  LocalDate createdBefore, @RequestParam(required = false) LocalDate createdAfter) {
+    var shops = service.searchShops(query, inVacations, createdBefore, createdAfter);
+    return ResponseEntity.ok(shops);
   }
 
   @Operation(description = "Get a shop by id")
